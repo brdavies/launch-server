@@ -12,3 +12,8 @@ task('env', [ ], function() {
     console.log(process.env);
     complete();
 });
+
+desc('Perform installation of launch-server');
+task('install', [ ], function() {
+    complete();
+});
