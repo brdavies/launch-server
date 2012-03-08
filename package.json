@@ -1,0 +1,10 @@
+{
+  "name" : "launch-server",
+  "version" : "0.0.1",
+  "author" : "Ben Davies",
+  "description" : "A post-commit deployment tool for sites/apps.",
+  "engines" : { "node" : "*" },
+  "dependencies" : {
+  },
+  "main" : "index"
+}
