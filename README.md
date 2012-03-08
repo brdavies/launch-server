@@ -1,4 +1,4 @@
-# launch-server – app deployment for node.js
+# launch-server – server-side deployment for node.js
 
 launch-server is an application deployment framework, essentially a lean set
 of [jake](https://github.com/mde/jake) tasks for deploying node apps.
