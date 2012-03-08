@@ -1,6 +1,6 @@
 # launch-server – app deployment for node.js
 
-launch is an application deployment framework, essentially a lean set
+launch-server is an application deployment framework, essentially a lean set
 of [jake](https://github.com/mde/jake) tasks for deploying node apps.
 
 Currently it is tiny, but very extensible.
