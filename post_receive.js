@@ -205,10 +205,6 @@ module.exports = function(action_table, cb) {
     var launch_dir = process.argv[2];
 
     if (action_table) {
-        if (!cb) {
-            console.log("cb not defined.");
-            process.exit(1);
-        }
         if (!repo_dir) {
             console.log("Repository path must be supplied as the first argument.");
             process.exit(1);
