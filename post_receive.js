@@ -133,12 +133,21 @@ module.exports = function(options, cb) {
         };
 
         var jake_complete = function(data) {
-            if (data.relaunch) {
-                run(data.relaunch, undefined, function() {
-                    if (cb) {
-                        cb(data);
-                    }
-                });
+            data.dir_new = "?";
+            data.dir_old = "?";
+            if (data.exec_post) {
+                switch (typeof(data.exec_post)) {
+                case "string" :
+                    run(data.exec_post, undefined, function() {
+                        if (cb) {
+                            cb(data);
+                        }
+                    });
+                    break;
+                case "function" :
+                    data.exec_post(data, cb);
+                    break;
+                };            
             } else if (cb) {
                 cb(data);
             }
@@ -179,7 +188,7 @@ module.exports = function(options, cb) {
 
                         if (entry.branch == data.branch) {
                             data.dir = entry.dir;
-                            data.relaunch = entry.relaunch;
+                            data.exec_post = entry.exec_post;
                             if (entry.exec) {
                                 switch (typeof(entry.exec)) {
                                 case "string" :
@@ -190,6 +199,8 @@ module.exports = function(options, cb) {
                                     break;
                                 };
                             } else if (entry.dir) {
+                                /* There is no 'exec' option, default to running
+                                 * the internal jakefile to deploy. */
                                 run_jake(data, jake_complete);
                             }
                         }

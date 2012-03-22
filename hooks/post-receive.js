@@ -28,13 +28,13 @@ task('post-receive', [ 'validate-deploy' ], function() {
         /**
          * This table defines what to do when a specific branch is modified. */
         table : [{
-            branch   : "live",
-            dir      : "/srv/node/your-app-name",
-            relaunch : 'echo "A command to relaunch your-app-name (live)"'
+            branch    : "live",
+            dir       : "/srv/node/your-app-name",
+            exec_post : 'echo "A command to relaunch your-app-name (live)"'
         } , {
-            branch   : "master",
-            dir      : "/srv/node/your-app-name",
-            relaunch : 'echo "A command to relaunch your-app-name (dev)"'
+            branch    : "master",
+            dir       : "/srv/node/your-app-name",
+            exec_post : 'echo "A command to relaunch your-app-name (dev)"'
         }],
 
         /**
