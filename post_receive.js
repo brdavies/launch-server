@@ -39,7 +39,7 @@
  *     function: a function to call. The function receives three arguments, "old
  *     revision", "new revision", and "referenece".
  */
-module.exports = function(action_table, cb) {
+module.exports = function(options, cb) {
 
     var post_receive = function(table, repo_dir, launch_dir, cb) {
 
@@ -201,29 +201,25 @@ module.exports = function(action_table, cb) {
 
     var fs = require('fs');
 
-    var repo_dir = process.argv[3];
-    var launch_dir = process.argv[2];
-
-    if (action_table) {
-        if (!repo_dir) {
-            console.log("Repository path must be supplied as the first argument.");
-            process.exit(1);
-        } else if (!launch_dir) {
-            console.log("Launch application path must be supplied as the second argument.");
-            process.exit(1);
-        }
-
-        fs.stat(repo_dir, function(err, stat) {
+    if (!options) {
+        throw new Error('Invalid options');
+    } else if (!options.repo) {
+        throw new Error("Repository path not set in options (repo).");
+    } else if (!options.launch_app) {
+        throw new Error("Launch application path not set in options (launch_app).");
+    } else {
+        fs.stat(options.repo, function(err, stat) {
             if ((err) || (!stat.isDirectory())) {
-                console.log('Repository path ' + repo_dir + ' is invalid.');
-                process.exit(1);
+                throw new Error('Repository path ' + options.repo + ' is invalid.');
             } else {
-                fs.stat(launch_dir, function(err, stat) {
+                fs.stat(options.launch_app, function(err, stat) {
                     if ((err) || (!stat.isDirectory())) {
-                        console.log('Launch application path ' + launch_dir + ' is invalid.');
-                        process.exit(1);
+                        throw new Error(
+                            'Launch application path ' + options.launch_app +
+                            ' is invalid.');
                     } else {
-                        post_receive(action_table, repo_dir, launch_dir, cb);
+                        post_receive(
+                            options.table, options.repo, options.launch_app, cb);
                     }
                 });
             }

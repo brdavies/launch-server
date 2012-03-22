@@ -16,7 +16,7 @@
 repo_dir=`pwd`
 
 # Path to the launch-server application.
-launch_dir="${repo_dir}/hooks/launch"
+launch_dir="/home/ben/rohben/launch-server"
 
-# The node script does all the work.
-node ./hooks/post-receive.js ${launch_dir} ${repo_dir}
+# The Jakefile does all the work.
+jake --jakefile ./hooks/Jakefile repo=${repo_dir} launch_app=${launch_dir} post-receive
