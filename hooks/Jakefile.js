@@ -34,7 +34,9 @@ task('post-receive', [ 'validate-deploy' ], function() {
         } , {
             branch    : "master",
             dir       : "/srv/node/your-app-name",
-            exec_post : 'echo "A command to relaunch your-app-name (dev)"'
+            exec_post : 'echo "A command to relaunch your-app-name (dev)"',
+            port_min  : 9000,
+            port_max  : 9100
         }],
 
         /**
@@ -47,15 +49,9 @@ task('post-receive', [ 'validate-deploy' ], function() {
         launch_app : process.env.launch_app
     };
 
-    var post_receive = require(process.env.launch_app + "/post_receive.js");
+    var launch = require(process.env.launch_app + "/launch.js");
 
-    post_receive(options, function(data) {
-
-        /* This callback is made once the application has been deployed. If a more
-         * complicated sequence is required to relaunch the application, do it
-         * here. */
-        console.log(data);
-    });
+    launch.post_receive(options, launch.update_settings);
 
     complete();
 

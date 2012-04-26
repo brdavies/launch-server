@@ -19,4 +19,4 @@ repo_dir=`pwd`
 launch_dir="/home/ben/rohben/launch-server"
 
 # The Jakefile does all the work.
-jake --jakefile ./hooks/Jakefile repo=${repo_dir} launch_app=${launch_dir} post-receive
+jake --jakefile ./hooks/Jakefile.js repo=${repo_dir} launch_app=${launch_dir} post-receive

@@ -39,7 +39,7 @@
  *     function: a function to call. The function receives three arguments, "old
  *     revision", "new revision", and "referenece".
  */
-module.exports = function(options, cb) {
+module.exports.post_receive = function(options, cb) {
 
     var post_receive = function(table, repo_dir, launch_dir, cb) {
 
@@ -133,8 +133,11 @@ module.exports = function(options, cb) {
         };
 
         var jake_complete = function(data) {
-            data.dir_new = "?";
-            data.dir_old = "?";
+
+            /* These values are determined by the tasks in Jakefile.js. */
+            data.dir_new = data.dir + "/." + data.rev_new;
+            data.dir_old = data.dir + "/." + data.rev_old;
+            
             if (data.exec_post) {
                 switch (typeof(data.exec_post)) {
                 case "string" :
@@ -173,22 +176,26 @@ module.exports = function(options, cb) {
             refs.forEach(function(ref) {
 
                 if (ref) {
-                    var data = {};
+                    var git_data = {};
                     var revs = ref.split(" ");
 
-                    data.rev_old = revs[0];
-                    data.rev_new = revs[1];
-                    data.branch = revs[2];
+                    git_data.rev_old = revs[0];
+                    git_data.rev_new = revs[1];
+                    git_data.branch = revs[2];
 
-                    if (data.branch) {
-                        data.branch = data.branch.split("/").pop();
+                    if (git_data.branch) {
+                        git_data.branch = git_data.branch.split("/").pop();
                     }
 
                     table.forEach(function(entry) {
 
-                        if (entry.branch == data.branch) {
-                            data.dir = entry.dir;
-                            data.exec_post = entry.exec_post;
+                        if (entry.branch == git_data.branch) {
+                            var data = entry;
+                            
+                            data.rev_old = git_data.rev_old;
+                            data.rev_new = git_data.rev_new;
+                            data.branch = git_data.branch;
+                            
                             if (entry.exec) {
                                 switch (typeof(entry.exec)) {
                                 case "string" :
@@ -236,4 +243,8 @@ module.exports = function(options, cb) {
             }
         });
     }
+};
+
+module.exports.update_settings = function(data) {
+    console.log(data);
 };
